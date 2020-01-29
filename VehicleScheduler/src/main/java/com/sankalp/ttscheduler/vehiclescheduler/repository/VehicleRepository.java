@@ -5,15 +5,20 @@ package com.sankalp.ttscheduler.vehiclescheduler.repository;
 
 import java.util.List;
 
-import com.sankalp.ttscheduler.vehiclescheduler.bean.Vehicle;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import com.sankalp.ttscheduler.vehiclescheduler.entity.Vehicle;
 
 /**
  * @author sankalp
  *
  */
-public interface VehicleRepository {
-	public int insertVehicles(List<Vehicle> vehiclesList);
-	public List<Vehicle> retrieveAllVehicles();
-	public List<Vehicle> findVehiclesByManufacturer(String manufacturer);
+@Repository
+public interface VehicleRepository extends MongoRepository<Vehicle, String>{
+	//public List<Vehicle> retrieveAllVehicles();
+	public List<Vehicle> findByManufacturer(String manufacturer);
+	public List<Vehicle> findByModel(String model);
+	public Vehicle findByVin(String vin);
 
 }

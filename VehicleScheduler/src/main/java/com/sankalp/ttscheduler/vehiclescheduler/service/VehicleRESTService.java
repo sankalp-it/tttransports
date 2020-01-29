@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.sankalp.ttscheduler.vehiclescheduler.bean.Vehicle;
+import com.sankalp.ttscheduler.vehiclescheduler.entity.Vehicle;
 
 /**
  * @author sankalp

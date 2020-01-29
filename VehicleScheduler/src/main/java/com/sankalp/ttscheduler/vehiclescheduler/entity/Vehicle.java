@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.sankalp.ttscheduler.vehiclescheduler.bean;
+package com.sankalp.ttscheduler.vehiclescheduler.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Component;
  *
  */
 public class Vehicle {
-	private long id;
+	@Id
+	private String id;
 	private String manufacturer;
 	private String model;
 	private String vin;
@@ -29,7 +31,7 @@ public class Vehicle {
 	 * @param paxCapacity
 	 * @param typeOfPermit
 	 */
-	public Vehicle(long id, String manufacturer, String model, String vin, int paxCapacity, String typeOfPermit) {
+	public Vehicle(String id, String manufacturer, String model, String vin, int paxCapacity, String typeOfPermit) {
 		super();
 		this.id = id;
 		this.manufacturer = manufacturer;
@@ -41,13 +43,13 @@ public class Vehicle {
 	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	/**
@@ -114,7 +116,7 @@ public class Vehicle {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
 		result = prime * result + paxCapacity;
@@ -122,6 +124,7 @@ public class Vehicle {
 		result = prime * result + ((vin == null) ? 0 : vin.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -131,7 +134,10 @@ public class Vehicle {
 		if (getClass() != obj.getClass())
 			return false;
 		Vehicle other = (Vehicle) obj;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (manufacturer == null) {
 			if (other.manufacturer != null)
