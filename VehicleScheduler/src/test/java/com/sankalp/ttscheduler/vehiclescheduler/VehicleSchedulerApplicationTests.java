@@ -1,7 +1,6 @@
 package com.sankalp.ttscheduler.vehiclescheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
@@ -139,9 +138,12 @@ class VehicleSchedulerApplicationTests {
 		vehicleRepository.saveAll(dataInputList);
 		Vehicle tVehicle = vehicleRepository.findByVin("1234567GH886");
 		System.out.println(tVehicle);
+		//vehicleRepository.searchByYearMakeModel(make, model);
 
 		assertEquals(vehicle4, tVehicle);
 		//clean up
 		vehicleRepository.deleteAll();
 	}
+	
+
 }
