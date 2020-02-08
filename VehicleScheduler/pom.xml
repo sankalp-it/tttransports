@@ -50,7 +50,12 @@
 		<dependency>
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-mongodb</artifactId>
-		    </dependency>		
+	   </dependency>
+	   <dependency>
+		    <groupId>com.mysema.querydsl</groupId>
+		    <artifactId>querydsl-jpa</artifactId>
+		    <version>3.4.3</version>
+		</dependency> 		
 	</dependencies>
 
 	<build>
@@ -59,6 +64,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
 		</plugins>
 	</build>
 

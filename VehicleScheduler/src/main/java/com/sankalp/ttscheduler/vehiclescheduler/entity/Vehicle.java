@@ -2,7 +2,6 @@
  * 
  */
 package com.sankalp.ttscheduler.vehiclescheduler.entity;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
