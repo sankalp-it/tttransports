@@ -1,10 +1,13 @@
 package com.sankalp.ttscheduler.vehiclescheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -14,17 +17,18 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 
 import com.sankalp.ttscheduler.vehiclescheduler.entity.Vehicle;
 import com.sankalp.ttscheduler.vehiclescheduler.repository.VehicleRepository;
 import com.sankalp.ttscheduler.vehiclescheduler.service.VehicleService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest
+@Slf4j
 class VehicleSchedulerApplicationTests {
 	
 	@Autowired
@@ -35,6 +39,8 @@ class VehicleSchedulerApplicationTests {
 	private VehicleRepository vehicleRepository;
 //	ApplicationContext ctx;
 //	
+	
+
 	@BeforeEach
 	public void loadVehicles() {
 		Vehicle vehicle1 = new Vehicle("123","Nissan", "Leaf", "1234567GH890",12,"Commercial");
@@ -53,6 +59,20 @@ class VehicleSchedulerApplicationTests {
 	void clearVehicles() {
 		vehicleRepository.deleteAll();
 	}
+	
+//	@AfterAll
+//	void loadDBData() {
+//		Vehicle vehicle1 = new Vehicle("123","Nissan", "Leaf", "1234567GH890",12,"Commercial");
+//		Vehicle vehicle2 = new Vehicle("124","Nissan", "Murano", "1234567GH896",8,"Commercial");
+//		Vehicle vehicle3 = new Vehicle("125","Tesla", "Model3", "1234567GH8908",5,"Commercial");
+//		Vehicle vehicle4 = new Vehicle("126","Chevrolet", "Corvette", "1234567GH886",2,"Commercial");
+//		List<Vehicle> dataInputList = new ArrayList<Vehicle>() ;
+//		dataInputList.add(vehicle1);
+//		dataInputList.add(vehicle2);
+//		dataInputList.add(vehicle3);
+//		dataInputList.add(vehicle4);
+//		vehicleRepository.saveAll(dataInputList);		
+//	}
 
 	@Test
 	void contextLoads() {
@@ -70,18 +90,21 @@ class VehicleSchedulerApplicationTests {
 	}
 	
 	@Test
+	@Disabled
 	void testInsertVehicleSuccess() {
 		Vehicle vehicle = new Vehicle("123","Nissan", "Leaf", "1234567GH890",12,"Commercial");
 		List<Vehicle> vehiclesList = new ArrayList<Vehicle>();
 		vehiclesList.add(vehicle);
 		Vehicle tVehicle = vehicleRepository.save(vehicle);
 		System.out.println(tVehicle);
+
 		assertEquals(tVehicle,vehicle);
 		//clean up
 		vehicleRepository.delete(vehicle);
 		
 	}
 	@Test
+	@Disabled
 	void testVehicleRepoFindAll() {
 
 		List<Vehicle> vehiclesList  = vehicleRepository.findAll();
@@ -95,6 +118,7 @@ class VehicleSchedulerApplicationTests {
 	}
 
 	@Test
+	@Disabled
 	void testVehicleRepoFindByManufacturer() {
 
 		List<Vehicle> tVehiclesList = vehicleRepository.findByManufacturer("Nissan");
@@ -109,6 +133,7 @@ class VehicleSchedulerApplicationTests {
 	}
 	
 	@Test
+	@Disabled
 	void testVehicleRepoFindByModel() {
 
 		List<Vehicle> tVehiclesList = vehicleRepository.findByModel("Murano");
@@ -123,6 +148,7 @@ class VehicleSchedulerApplicationTests {
 	}
 
 	@Test
+	@Disabled
 	void testVehicleRepoFindByVin() {
 		Vehicle vehicle4 = new Vehicle("126","Chevrolet", "Corvette", "1234567GH886",2,"Commercial");
 		Vehicle tVehicle = vehicleRepository.findByVin("1234567GH886");
@@ -180,6 +206,57 @@ class VehicleSchedulerApplicationTests {
 		List<Vehicle> vehiclesList = vehicleRepository.searchVehicles(searchCriteriaList,orderList);
 		assertEquals(2, vehiclesList.size());
 		System.out.println("\n Vehicles123 ::" + vehiclesList+"\n##################\n");
+		
+	}
+	
+	@Test
+	void testVehicleServiceFindAll() {
+		List<Vehicle> vehiclesList = new ArrayList<Vehicle>();
+		vehiclesList = vehicleService.findAll();
+		assertNotNull(vehiclesList);
+		assertEquals(4, vehiclesList.size());
+		
+	}
+	
+	@Test
+	void testVehicleServiceDeleteById() {
+		
+		vehicleService.deleteById("126");
+		List<Vehicle> vehiclesList = new ArrayList<Vehicle>();
+		vehiclesList = vehicleService.findAll();
+		assertNotNull(vehiclesList);
+		assertEquals(3, vehiclesList.size());
+		
+	}
+	
+	
+	@Test
+	void testVehicleServiceInsertAll() {
+		Vehicle vehicle1 = new Vehicle("213","Nissan", "Leaf", "1234567GH890",12,"Commercial");
+		Vehicle vehicle2 = new Vehicle("214","Nissan", "Murano", "1234567GH896",8,"Commercial");
+		Vehicle vehicle3 = new Vehicle("215","Tesla", "Model3", "1234567GH8908",5,"Commercial");
+		Vehicle vehicle4 = new Vehicle("216","Chevrolet", "Corvette", "1234567GH886",2,"Commercial");
+		List<Vehicle> dataInputList = new ArrayList<Vehicle>() ;
+		dataInputList.add(vehicle1);
+		dataInputList.add(vehicle2);
+		dataInputList.add(vehicle3);
+		dataInputList.add(vehicle4);
+		vehicleService.insertAll(dataInputList);
+		List<Vehicle> vehiclesList = new ArrayList<Vehicle>();
+		vehiclesList = vehicleService.findAll();
+		assertNotNull(vehiclesList);
+		assertEquals(8, vehiclesList.size());
+		
+	}
+	
+	void testVehicleServiceUpdate() {
+		//Optional<Vehicle> originalVehicle = vehicleRepository.findById("123");
+		Vehicle vehicle1 = new Vehicle("Nissan", "Leaf", "1234567GH890",5,"Passenger");
+		//Vehicle changedVehicle = vehicleRepository.save(vehicle1);
+		Vehicle changedVehicle = vehicleService.updateVehicle(vehicle1,"123");
+		assertNotNull(changedVehicle);
+		assertEquals(vehicle1, changedVehicle);
+		
 		
 	}
 }

@@ -39,6 +39,13 @@ public class Vehicle {
 		this.paxCapacity = paxCapacity;
 		this.typeOfPermit = typeOfPermit;
 	}
+	public Vehicle(String manufacturer, String model, String vin, int paxCapacity, String typeOfPermit) {
+		this.manufacturer = manufacturer;
+		this.model = model;
+		this.vin = vin;
+		this.paxCapacity = paxCapacity;
+		this.typeOfPermit = typeOfPermit;
+	}
 	/**
 	 * @return the id
 	 */
