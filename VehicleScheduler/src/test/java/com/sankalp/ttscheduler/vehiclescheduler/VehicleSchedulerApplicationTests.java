@@ -1,22 +1,19 @@
 package com.sankalp.ttscheduler.vehiclescheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -37,16 +34,27 @@ class VehicleSchedulerApplicationTests {
 	private VehicleService vehicleService;
 	@Autowired
 	private VehicleRepository vehicleRepository;
+	@Autowired
+	private Environment env;
+
+	@Autowired
+	//@Value("#{environment['JAVA_HOME']}")
+	//@Value("${VEH_MONGO_DB_URL}")
+	//private String dbUrl;
 //	ApplicationContext ctx;
 //	
+	//private static Logger logger = LoggerFactory.getLogger(VehicleSchedulerApplicationTests.class);
 	
 
 	@BeforeEach
 	public void loadVehicles() {
+		System.out.println("DB URL :" + env.getProperty("VEH_MONGO_DB_URL"));
+		//System.out.println("DB URL :" + dbUrl);
 		Vehicle vehicle1 = new Vehicle("123","Nissan", "Leaf", "1234567GH890",12,"Commercial");
 		Vehicle vehicle2 = new Vehicle("124","Nissan", "Murano", "1234567GH896",8,"Commercial");
 		Vehicle vehicle3 = new Vehicle("125","Tesla", "Model3", "1234567GH8908",5,"Commercial");
 		Vehicle vehicle4 = new Vehicle("126","Chevrolet", "Corvette", "1234567GH886",2,"Commercial");
+		//Logger.info("{}", env.getProperty("app.name"));
 		List<Vehicle> dataInputList = new ArrayList<Vehicle>() ;
 		dataInputList.add(vehicle1);
 		dataInputList.add(vehicle2);

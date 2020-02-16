@@ -5,6 +5,7 @@ package com.sankalp.ttscheduler.vehiclescheduler.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class VehicleRESTService implements VehicleService {
 	@Override
 	@GetMapping("/vehicles")
 	public List<Vehicle> findAll() {
+//		System.out.println("DB URL :" + System.getenv("JAVA_13_HOME"));
+		 Map<String, String> enviorntmentVars  = System.getenv();
+	        enviorntmentVars.entrySet().forEach(System.out::println);
 		List<Vehicle> vehiclesList = new ArrayList<Vehicle>();
 		vehiclesList = vehicleRepository.findAll();
 		return vehiclesList;
